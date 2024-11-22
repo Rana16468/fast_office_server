@@ -1,5 +1,5 @@
 import httpStatus from "http-status";
-import AppError from "../app/error/AppError";
+import AppError from "../../app/error/AppError";
 import { TContract } from "./contract.interface"
 import { Contract } from "./contract.model";
 

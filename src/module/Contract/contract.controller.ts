@@ -1,7 +1,7 @@
 import { RequestHandler } from "express";
-import catchAsync from "../utility/catchAsync";
+import catchAsync from "../../utility/catchAsync";
 import { ContractService } from "./contract.services";
-import sendRespone from "../utility/sendRespone";
+import sendRespone from "../../utility/sendRespone";
 import httpStatus from "http-status";
 
 

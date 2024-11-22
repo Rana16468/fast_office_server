@@ -1,6 +1,6 @@
 import express from 'express';
 import { ContractController } from './contract.controller';
-import validationRequest from '../middleware/validationRequest';
+import validationRequest from '../../middleware/validationRequest';
 import { ContractValidation } from './contract.zod.validation';
 
 const router= express.Router();
