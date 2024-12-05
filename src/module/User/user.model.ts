@@ -1,11 +1,11 @@
 
 
 import { Schema, model } from "mongoose";
-import { TUser } from "./user.interface";
+import { TUser, UserModel } from "./user.interface";
 import { USER_ROLE } from "./user.constant";
 
 // Define the TSales schema
-const TUserSchema = new Schema({
+const TUserSchema = new Schema<TUser,UserModel>({
 
     name: {
         type: String,
@@ -67,6 +67,14 @@ const TUserSchema = new Schema({
     timestamps:true
 });
 
+TUserSchema.set('toJSON', {
+    virtuals: true,
+    transform: function (doc, ret) {
+      delete ret.password;
+      return ret;
+    },
+  });
+
 
 // midlewere 
 TUserSchema .pre('find',function(next){
@@ -83,7 +91,13 @@ TUserSchema .pre('find',function(next){
     this.find({ isDelete:{$ne:true}})
   
     next();
-  })
+  });
+
+TUserSchema.statics.isUserExistByCustomId=async function(id:string)
+{
+    return await users.findById(id);
+}
 
 // Export the model
-export const users=model<TUser>('users',TUserSchema)
+
+export const users=model<TUser,UserModel>('users',TUserSchema)

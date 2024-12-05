@@ -1,6 +1,7 @@
 
 
 
+import { Model } from "mongoose";
 import { USER_ROLE } from "./user.constant";
 export type TUser={
 
@@ -16,7 +17,16 @@ export type TUser={
     districtName:string,
     isDeleted:boolean;
     isVerify:boolean;
+    isDelete?:boolean;
 
 }
+
+export interface UserModel extends Model<TUser> {
+    // eslint-disable-next-line no-unused-vars
+    isUserExistByCustomId(id:string):Promise<TUser>,
+    
+  
+  }
+
 export type TUserRole=keyof typeof USER_ROLE;
 
