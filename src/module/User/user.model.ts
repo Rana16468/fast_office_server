@@ -27,7 +27,7 @@ const TUserSchema = new Schema({
      role:{
          type:String,
          enum:{
-             values:[USER_ROLE.Admin,USER_ROLE.Employee,USER_ROLE.User],
+             values:[USER_ROLE.ADMIN,USER_ROLE.EMPLOYEE,USER_ROLE.USER],
               message:'{VALUE} is Not Required'
             }
            },

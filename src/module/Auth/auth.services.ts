@@ -35,6 +35,27 @@ const createValidationTokenIntoDb=async(payload:TAuth)=>{
         return accessToken;
     }
 }
+
+const updateMyProfileFromDb=async({name,photo}:{ name:string,photo:string},id:string)=>{
+
+    const result=await users.findByIdAndUpdate(id,{name:name,photo:photo},{new:true,upsert:true});
+    return result;
+ }
+ const  chnageUserRoleStatusFromDb=async(id:string,data:{role:string})=>{
+ 
+      const result=await users.findByIdAndUpdate(id,{role:data.role},{new:true,upsert:true});
+      return result;
+ 
+ }
+ const specificUserRollIntoDb=async(id:string)=>{
+     
+     const result = await users.findById(id).select('role');
+     return result; 
+ }
 export const AuthService={
-    createValidationTokenIntoDb
+    createValidationTokenIntoDb,
+    updateMyProfileFromDb,
+    chnageUserRoleStatusFromDb,
+    specificUserRollIntoDb
+
 }

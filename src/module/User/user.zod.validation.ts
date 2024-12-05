@@ -12,7 +12,7 @@ import { USER_ROLE } from "./user.constant";
     email: z.string().email("Invalid email format").optional(),
     password: z.string().min(6, "Password is required and should be at least 6 characters"),
     photo: z.string().optional(),
-    role: z.enum([USER_ROLE.Admin, USER_ROLE.Employee, USER_ROLE.User], {
+    role: z.enum([USER_ROLE.ADMIN, USER_ROLE.EMPLOYEE, USER_ROLE.USER], {
     errorMap: (issue) => ({ message: `${issue} is not a valid role` }),
    }),
    os: z.string().min(1, "OS is required"),

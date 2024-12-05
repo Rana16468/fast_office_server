@@ -1,7 +1,7 @@
 
 
 
-
+import { USER_ROLE } from "./user.constant";
 export type TUser={
 
     name:string;
@@ -18,4 +18,5 @@ export type TUser={
     isVerify:boolean;
 
 }
+export type TUserRole=keyof typeof USER_ROLE;
 

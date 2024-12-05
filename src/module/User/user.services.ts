@@ -71,7 +71,20 @@ const createUserIntoDb = async (payload: TUser) => {
     }
 };
 
+const myprofileIntoDb=async(id:string)=>{
+
+
+    const result=await users.findById(id);
+    return result;
+
+    
+
+
+}
+
+
 export const UserService={
 
-    createUserIntoDb
+    createUserIntoDb,
+    myprofileIntoDb
 }
