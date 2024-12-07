@@ -9,8 +9,6 @@ const createContract:RequestHandler=catchAsync(async(req,res)=>{
 
     const result=await UserService.createUserIntoDb(req.body);
     sendRespone(res,{success:true,statusCode:httpStatus.CREATED,message:"Sucessfulled Create Account",data:result});
-
-
 });
 
 const  myprofile:RequestHandler=catchAsync(async(req,res)=>{

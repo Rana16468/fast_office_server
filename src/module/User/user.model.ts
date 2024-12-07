@@ -93,6 +93,8 @@ TUserSchema .pre('find',function(next){
     next();
   });
 
+  
+
 TUserSchema.statics.isUserExistByCustomId=async function(id:string)
 {
     return await users.findById(id);
