@@ -37,7 +37,7 @@ class QueryBuilder<T> {
     filter()
     {
          let queryObject={...this.query};
-         if(this.query.minPrice && this.query.maxPrice)
+         if(this.query && this.query.maxPrice)
          {
            queryObject={ price: { $gte:Number(this.query.minPrice),$lte:Number(this.query.maxPrice)} }
          }
@@ -63,15 +63,16 @@ class QueryBuilder<T> {
 
     //pagination 
 
-paginate()
-{
-    const limit=Number(this?.query?.limit) || 0;
-    const page=Number(this?.query?.page) || 1;
-    const  skip=(page-1)*limit;
-    this.modelQuery=this.modelQuery.skip(skip).limit(limit);
-    return this;
-
-}
+    paginate() {
+       
+        const limit = Math.max(Number(this.query.limit) || 10, 1); 
+        const page = Math.max(Number(this.query.page) || 1, 1); 
+        const skip = (page - 1) * limit;
+        this.modelQuery = this.modelQuery.skip(skip).limit(limit);
+    
+        return this; 
+    }
+    
 
 fields()
 {
