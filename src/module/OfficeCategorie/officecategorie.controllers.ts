@@ -33,11 +33,18 @@ const  UpdateOfficeCategorie:RequestHandler=catchAsync(async(req,res)=>{
     const data=req.body;
     const result=await OfficeCategorieServices.UpdateOfficeCategorieFromDb(id,data);
     sendRespone(res,{success:true,statusCode:httpStatus.OK,message:"Successfully Update Categorie",data:result});
+});
+
+const  DeleteOfficeCategorie:RequestHandler=catchAsync(async(req,res)=>{
+
+    const result=await OfficeCategorieServices.DeleteOfficeCategorieFromDb(req.params.id);
+    sendRespone(res,{success:true,statusCode:httpStatus.OK,message:"Successfully Delete Categorie",data:result});
 })
 
 export const OfficeCategorieController={
     CreateNewOfficeCategorie,
     GetAllShoesOfficeCategorie,
     GetSpecificOfficesCategorie,
-    UpdateOfficeCategorie
+    UpdateOfficeCategorie,
+    DeleteOfficeCategorie
 }

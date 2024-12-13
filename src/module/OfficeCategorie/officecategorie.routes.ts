@@ -13,4 +13,5 @@ router.post('/create_office_categorie',auth(USER_ROLE.ADMIN),validationRequest(O
 router.get("/get_all_office_categorie",auth(USER_ROLE.EMPLOYEE,USER_ROLE.ADMIN,USER_ROLE.USER),OfficeCategorieController.GetAllShoesOfficeCategorie);
 router.get("/get_specific_office_categorie/:id",auth(USER_ROLE.EMPLOYEE,USER_ROLE.ADMIN,USER_ROLE.USER), OfficeCategorieController.GetSpecificOfficesCategorie);
 router.patch("/update_office_categorie/:id",auth(USER_ROLE.ADMIN),validationRequest(OfficeValidationSchema.TUpdateOfficeCategorieSchema),OfficeCategorieController.UpdateOfficeCategorie);
+router.delete("/delete_office_categorie/:id",auth(USER_ROLE.ADMIN),OfficeCategorieController.DeleteOfficeCategorie);
 export const OfficeCategorieRouter=router;
