@@ -32,7 +32,7 @@ const Find_Speciifc_Office_Infastructure_ById:RequestHandler=catchAsync(async(re
 
 });
 
-const UpdateOffice_Infastructure_FormDb:RequestHandler=catchAsync(async(req,res)=>{
+const UpdateOffice_Infastructure:RequestHandler=catchAsync(async(req,res)=>{
 
     const result=await OfficeProductServices.UpdateOffice_Infastructure_FormDb(req.body,req.params.id);
     sendRespone(res,{success:true,statusCode:httpStatus.OK,message:"Successfully Update  Infastructure",data:result});
@@ -65,7 +65,7 @@ export const OfficeProductController={
     Find_Specific_Office_Infastructure,
     FindAll_Office_Infastructure,
     Find_Speciifc_Office_Infastructure_ById,
-    UpdateOffice_Infastructure_FormDb,
+    UpdateOffice_Infastructure,
     Delete_Office_Infastructure,
     Office_Categorie_Infastructure,
     Find_Specific_Office_Gallery

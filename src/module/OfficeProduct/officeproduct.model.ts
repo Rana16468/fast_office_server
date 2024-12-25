@@ -68,6 +68,7 @@ const RoomSchema = new Schema<TRoom>({
   image: { type: String, required: [true, "Image is required"] },
 });
 
+
 // Main Office Infrastructure Schema
 const OfficeInfrastructureSchema = new Schema<TOfficeInfrastructure, OfficeProductModal>(
   {
@@ -116,6 +117,12 @@ OfficeInfrastructureSchema.pre("find", function (next) {
 
 OfficeInfrastructureSchema.pre("aggregate", function (next) {
   this.pipeline().unshift({ $match: { isDeleted: { $ne: true } } });
+  next();
+});
+OfficeInfrastructureSchema.pre('findOne',function(next){
+  
+  this.find({ isDeleted:{$ne:true}})
+
   next();
 });
 

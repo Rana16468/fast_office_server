@@ -31,7 +31,7 @@ const TLaptopConfigurationSchema = z.object({
   battery: z.string({ required_error: 'Battery is required' }),
 });
 
-const TUpdareLaptopConfigurationSchema = z.object({
+const TUpdateLaptopConfigurationSchema = z.object({
     name: z.string({ required_error: 'Name is required' }).optional(),
     processor: z.string({ required_error: 'Processor is required' }).optional(),
     ram: z.string({ required_error: 'RAM is required' }).optional(),
@@ -161,7 +161,7 @@ const TUpdateOfficeInfrastructureSchema = z.object({
         desktopconfigration: TUpdateDesktopConfigurationSchema.optional(),
       }).optional(),
       laptopproduct: TUpdateProductSchema.extend({
-        laptopconfigration: TLaptopConfigurationSchema.optional(),
+        laptopconfigration: TUpdateLaptopConfigurationSchema.optional(),
       }).optional(),
       projector: z.string({ required_error: 'Projector is required' }).optional(),
       projectorproduct: TUpdateProductSchema.extend({
@@ -179,7 +179,7 @@ const TUpdateOfficeInfrastructureSchema = z.object({
       ac: z.string({ required_error: 'AC is required' }).optional(),
       acproduct: TUpdateProductSchema.extend({
         acconfigration: TUpdateACConfigurationSchema.optional(),
-      }),
+      }).optional(),
       officeinfastructure: z.array(TUpdateRoomSchema.optional(), {
         required_error: 'Office infrastructure is required',
       }).optional(),

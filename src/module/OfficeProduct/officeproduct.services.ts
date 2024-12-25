@@ -118,6 +118,8 @@ const UpdateOffice_Infastructure_FormDb = async (
     },
   );
 
+  console.log(isExistOfficeProduct)
+
   if (!isExistOfficeProduct) {
     throw new AppError(
       httpStatus.NOT_FOUND,
