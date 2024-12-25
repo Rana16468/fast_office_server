@@ -52,6 +52,12 @@ const  Office_Categorie_Infastructure:RequestHandler=catchAsync(async(req,res)=>
 
 });
 
+const  Find_Specific_Office_Gallery:RequestHandler=catchAsync(async(req,res)=>{
+    const result=await OfficeProductServices.Find_Specific_Office_Gallery_FromDb(req.params.officeproductId);
+    sendRespone(res,{success:true,statusCode:httpStatus.OK,message:"Successfully Find Office Gallery",data:result});
+
+});
+
 
 
 export const OfficeProductController={
@@ -61,5 +67,7 @@ export const OfficeProductController={
     Find_Speciifc_Office_Infastructure_ById,
     UpdateOffice_Infastructure_FormDb,
     Delete_Office_Infastructure,
-    Office_Categorie_Infastructure
+    Office_Categorie_Infastructure,
+    Find_Specific_Office_Gallery
+    
 }

@@ -90,6 +90,8 @@ const DeleteOfficeCategorieFromDb = async (id: string) => {
   }
 };
 
+
+
 // Enhanced error handling and validation
 
 export const OfficeCategorieServices = {

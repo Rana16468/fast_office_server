@@ -18,5 +18,7 @@ router.get("/find_specific_office_infastructure/:id",auth(USER_ROLE.USER,USER_RO
 router.patch("/update_specific_office_infastructure/:id",auth(USER_ROLE.ADMIN),validationRequest(OfficeProductValidation.TUpdateOfficeInfrastructureSchema),OfficeProductController.UpdateOffice_Infastructure_FormDb);
 router.delete("/delete_office_infastructure/:id",auth(USER_ROLE.ADMIN),OfficeProductController.Delete_Office_Infastructure);
 router.get("/find_office_categorie_infastructure/:categorie_name",auth(USER_ROLE.USER,USER_ROLE.EMPLOYEE,USER_ROLE.ADMIN),OfficeProductController.Office_Categorie_Infastructure);
+router.get("/find_specific_office_gallery/:officeproductId",auth(USER_ROLE.USER,USER_ROLE.EMPLOYEE,USER_ROLE.ADMIN),OfficeProductController.Find_Specific_Office_Gallery);
+
 
 export const OfficeProductRouter=router;

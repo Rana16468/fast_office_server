@@ -213,6 +213,44 @@ const Office_Categorie_Infastructure_FromDb = async (categorie_name:string) => {
     }
 };
 
+const Find_Specific_Office_Gallery_FromDb=async(officeproductId:string)=>{
+
+  try{
+
+    const result=await officeproducts.findById(officeproductId).select({
+      'furnitureproduct.name': 1,
+      'furnitureproduct.image': 1,
+      'deskproduct.name': 1,
+      'deskproduct.image': 1,
+      'electronicsproduct.name': 1,
+      'electronicsproduct.image': 1,
+      'laptopproduct.name': 1,
+      'laptopproduct.image': 1,
+      'projectorproduct.name': 1,
+      'projectorproduct.image': 1,
+      'printerproduct.name': 1,
+      'printerproduct.image': 1,
+      'officesuppliesproduct.name': 1,
+      'officesuppliesproduct.image': 1,
+      'stationeryproduct.name': 1,
+      'stationeryproduct.image': 1,
+      'acproduct.name': 1,
+      'acproduct.image': 1,
+      'officeinfastructure': 1
+    });
+    return result;
+
+
+  }
+  catch(error){
+    throw new AppError(
+      httpStatus.NOT_FOUND,
+      'Error fetching Office Product',
+      '' // Include the error message for debugging
+  );
+  }
+}
+
 
 
 
@@ -223,5 +261,6 @@ export const OfficeProductServices = {
   Find_Speciifc_Office_Infastructure_ById_FromDb,
   UpdateOffice_Infastructure_FormDb,
   Delete_Office_Infastructure_FromDb,
-  Office_Categorie_Infastructure_FromDb
+  Office_Categorie_Infastructure_FromDb,
+  Find_Specific_Office_Gallery_FromDb
 };
