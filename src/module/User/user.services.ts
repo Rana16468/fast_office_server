@@ -5,6 +5,7 @@ import { users } from "./user.model";
 import { startSession } from 'mongoose';
 
 const createUserIntoDb = async (payload: TUser) => {
+    
     const session = await startSession();
     session.startTransaction(); 
     try {

@@ -12,4 +12,6 @@ const router= express.Router();
 router.post('/',validationRequest(UserValidation.TUserZodSchema),UserController.createContract);
 router.get("/myprofile",auth(USER_ROLE.ADMIN,USER_ROLE.EMPLOYEE,USER_ROLE.USER),UserController.myprofile);
 
+
+
 export const UserRouter=router;

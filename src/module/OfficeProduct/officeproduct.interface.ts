@@ -78,6 +78,7 @@ export interface TOfficeInfrastructure {
     ac: string;
     acproduct: Product & { acconfigration: TACConfiguration };
     officeinfastructure: TRoom[];
+    isDeleteted?:Boolean
 }
 
 

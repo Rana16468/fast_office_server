@@ -36,7 +36,14 @@ const  specificUserRoll:RequestHandler=catchAsync(async(req,res)=>{
     const {id}=req.user;
     const result=await AuthService.specificUserRollIntoDb(id);
     sendRespone(res,{success:true,statusCode:httpStatus.OK,message:"Successfully Find User Roll",data:result});
-})
+});
+
+const findAllUsers:RequestHandler=catchAsync(async(req,res)=>{
+
+    const result=await AuthService.findAllUsersFromDb(req.query);
+    sendRespone(res,{success:true,statusCode:httpStatus.OK,message:"Successfully Find All Users",data:result});
+
+});
 
 
 
@@ -45,5 +52,6 @@ export const AuthController={
     createValidationToken,
     updateMyProfile,
     chnageUserRoleStatus,
-    specificUserRoll
+    specificUserRoll,
+    findAllUsers
 }

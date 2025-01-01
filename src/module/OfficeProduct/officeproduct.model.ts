@@ -105,6 +105,7 @@ const OfficeInfrastructureSchema = new Schema<TOfficeInfrastructure, OfficeProdu
       acconfigration: { type: ACConfigurationSchema, required: true },
     },
     officeinfastructure: { type: [RoomSchema], required: [true, "Office infrastructure is required"] },
+    isDeleteted: { type: Boolean, default: false },
   },
   { timestamps: true }
 );

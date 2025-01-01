@@ -1,0 +1,1 @@
+export  const excludeField = ['name','email','role','districtName'];
