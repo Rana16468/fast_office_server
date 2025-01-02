@@ -19,6 +19,11 @@ const Find_Specific_Office_Infastructure:RequestHandler=catchAsync(async(req,res
     sendRespone(res,{success:true,statusCode:httpStatus.OK,message:"Successfully Find",data:result});
 });
 
+const  Find_Specific_Selling_Office_Infastructure:RequestHandler=catchAsync(async(req,res)=>{
+    const result=await OfficeProductServices.Find_Specific_Selling_Office_Infastructure_FormDb(req.params.officecategorieId,req.params);
+    sendRespone(res,{success:true,statusCode:httpStatus.OK,message:"Find Specifc Selling Product Successfully",data:result});
+})
+
 const FindAll_Office_Infastructure:RequestHandler=catchAsync(async(req,res)=>{
     const result=await OfficeProductServices.FindAll_Office_Infastructure_FormDb();
     sendRespone(res,{success:true,statusCode:httpStatus.OK,message:"Successfully Find",data:result});
@@ -68,6 +73,7 @@ export const OfficeProductController={
     UpdateOffice_Infastructure,
     Delete_Office_Infastructure,
     Office_Categorie_Infastructure,
-    Find_Specific_Office_Gallery
+    Find_Specific_Office_Gallery,
+    Find_Specific_Selling_Office_Infastructure
     
 }

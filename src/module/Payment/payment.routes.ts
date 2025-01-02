@@ -34,4 +34,8 @@ router.delete(
   PaymentController.FailedPaymentStatusDelete,
 );
 
+router.get("/find_my_payment_leaser",auth(USER_ROLE.USER),PaymentController.Find_My_Payment_Payment_Laser);
+router.get("/user_dashboard",auth(USER_ROLE.USER),PaymentController.UserDashboard);
+router.get("/admin_dashboard",auth(USER_ROLE.EMPLOYEE,USER_ROLE.ADMIN),PaymentController.AdminDashboard);
+
 export const PaymentRouter = router;

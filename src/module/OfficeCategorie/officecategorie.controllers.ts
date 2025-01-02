@@ -20,12 +20,22 @@ const  GetAllShoesOfficeCategorie:RequestHandler=catchAsync(async(req,res)=>{
     sendRespone(res,{success:true,statusCode:httpStatus.OK,message:"Successfully Find",data:result});
 });
 
+const GetAllSelleingOfficeCategorie:RequestHandler=catchAsync(async(req,res)=>{
+    const result=await OfficeCategorieServices.GetAllSelleingOfficeCategorieFromDb(req.query);
+    sendRespone(res,{success:true,statusCode:httpStatus.OK,message:"Find All Selling Product",data:result});
+})
+
 const  GetSpecificOfficesCategorie:RequestHandler=catchAsync(async(req,res)=>{
 
     const {id}=req.params;
     const result=await OfficeCategorieServices.GetSpecificOfficesCategorieFromDb(id);
     sendRespone(res,{success:true,statusCode:httpStatus.OK,message:"Successfully Find Specific Categorie",data:result});
 });
+
+const GetSpecificSellingOfficeCategorie:RequestHandler=catchAsync(async(req,res)=>{
+    const result=await OfficeCategorieServices.GetSpecificSellingOfficeCategorieFromDb(req.params.id);
+    sendRespone(res,{success:true,statusCode:httpStatus.OK,message:"Successfully Find Selling Specific Categorie",data:result});
+})
 
 const  UpdateOfficeCategorie:RequestHandler=catchAsync(async(req,res)=>{
 
@@ -36,7 +46,6 @@ const  UpdateOfficeCategorie:RequestHandler=catchAsync(async(req,res)=>{
 });
 
 const  DeleteOfficeCategorie:RequestHandler=catchAsync(async(req,res)=>{
-
     const result=await OfficeCategorieServices.DeleteOfficeCategorieFromDb(req.params.id);
     sendRespone(res,{success:true,statusCode:httpStatus.OK,message:"Successfully Delete Categorie",data:result});
 })
@@ -46,5 +55,7 @@ export const OfficeCategorieController={
     GetAllShoesOfficeCategorie,
     GetSpecificOfficesCategorie,
     UpdateOfficeCategorie,
-    DeleteOfficeCategorie
+    DeleteOfficeCategorie,
+    GetAllSelleingOfficeCategorie,
+    GetSpecificSellingOfficeCategorie
 }

@@ -1,4 +1,4 @@
-import { model, Schema } from "mongoose";
+import { model, Query, Schema, PipelineStage  } from "mongoose";
 import { OfficeCategorieModal, TOfficeCategorie } from "./officecategorie.interfaces";
 import { CURRENCY, OFFICE_CATEGORIE } from "./officecategorie.constant";
 
@@ -47,21 +47,36 @@ const TOfficeCategorieSchema = new Schema<TOfficeCategorie,OfficeCategorieModal>
 });
 
   // midlewere 
-TOfficeCategorieSchema.pre('find',function(next){
-    this.find({ isDelete:{$ne:true}})
-    next();
-  });
-  TOfficeCategorieSchema.pre('aggregate',function(next){
 
-    this.pipeline().unshift({$match:{isDelete:{$ne:true}}})
+TOfficeCategorieSchema.pre<Query<any, any>>("find", function (next) {
+    const options = this.getOptions(); // Get custom options
+    if (!options?.includeDeleted) {
+      this.find({ isDelete: { $ne: true } });
+    }
     next();
   });
-  TOfficeCategorieSchema.pre('findOne',function(next){
   
-    this.find({ isDelete:{$ne:true}})
+TOfficeCategorieSchema.pre("aggregate", function (next) {
+    const pipelineOptions = this.pipeline();
+    if (
+      !pipelineOptions.find(
+        (stage): stage is PipelineStage.Match => "$match" in stage && stage.$match?.isDelete !== undefined
+      )
+    ) {
+      this.pipeline().unshift({ $match: { isDelete: { $ne: true } } });
+    }
   
     next();
   });
+  
+  TOfficeCategorieSchema.pre<Query<any, any>>("findOne", function (next) {
+    const options = this.getOptions();
+    if (!options?.includeDeleted) {
+      this.find({ isDelete: { $ne: true } });
+    }
+    next();
+  });
+  
 
   TOfficeCategorieSchema.statics.isOfficeCategorieExist=async function(id:string)
 {

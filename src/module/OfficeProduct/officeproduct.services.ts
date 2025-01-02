@@ -6,6 +6,7 @@ import { officeproducts } from './officeproduct.model';
 import QueryBuilder from '../../app/builder/QueryBuilder';
 import { excludeField } from './officeproduct.constant';
 
+
 const CreateOfficeProductIntoDb = async (payload: TOfficeInfrastructure) => {
   const isExistProductCategorie = await officecategories.isOfficeCategorieExist(
     payload.officecategorieId.toString(),
@@ -69,6 +70,40 @@ const Find_Specific_Office_Infastructure_FormDb = async (
   }
 };
 
+// selling office product
+const Find_Specific_Selling_Office_Infastructure_FormDb = async (
+  officecategorieId: string,
+  query: Record<string, unknown>,
+) => {
+  try {
+    const officeQuery = new QueryBuilder(
+      officeproducts.find({ officecategorieId,isDeleteted:true },null, { includeDeleted: true }).populate('officecategorieId'),
+      query,
+    )
+      .search(excludeField)
+      .filter()
+      .sort()
+      .paginate()
+      .fields();
+
+    const result = await officeQuery.modelQuery;
+    const meta = await officeQuery.countTotal();
+
+    return {
+      meta,
+      result,
+    };
+  } catch (error) {
+    throw new AppError(
+      httpStatus.NOT_FOUND,
+      'Error fetching Office Product',
+      '',
+    );
+  }
+};
+
+
+
 const FindAll_Office_Infastructure_FormDb = async () => {
   try {
     const officeQuery = new QueryBuilder(officeproducts.find({}).populate('officecategorieId'), {})
@@ -118,7 +153,7 @@ const UpdateOffice_Infastructure_FormDb = async (
     },
   );
 
-  console.log(isExistOfficeProduct)
+  
 
   if (!isExistOfficeProduct) {
     throw new AppError(
@@ -259,6 +294,7 @@ const Find_Specific_Office_Gallery_FromDb=async(officeproductId:string)=>{
 export const OfficeProductServices = {
   CreateOfficeProductIntoDb,
   Find_Specific_Office_Infastructure_FormDb,
+  Find_Specific_Selling_Office_Infastructure_FormDb,
   FindAll_Office_Infastructure_FormDb,
   Find_Speciifc_Office_Infastructure_ById_FromDb,
   UpdateOffice_Infastructure_FormDb,

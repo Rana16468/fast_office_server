@@ -1,4 +1,4 @@
-import { model, Schema } from 'mongoose';
+import { model, Query, Schema,PipelineStage } from 'mongoose';
 import { PaymentModal, TPayment } from './payment.interface';
 
 const TPaymentSchema = new Schema<TPayment, PaymentModal>(
@@ -35,20 +35,53 @@ const TPaymentSchema = new Schema<TPayment, PaymentModal>(
   },
 );
 
-// midlewere
-TPaymentSchema.pre('find', function (next) {
-  this.find({ isDelete: { $ne: true } });
-  next();
-});
-TPaymentSchema.pre('aggregate', function (next) {
-  this.pipeline().unshift({ $match: { isDelete: { $ne: true } } });
-  next();
-});
-TPaymentSchema.pre('findOne', function (next) {
-  this.find({ isDelete: { $ne: true } });
+// // midlewere
+// TPaymentSchema.pre('find', function (next) {
+//   this.find({ isDelete: { $ne: true } });
+//   next();
+// });
+// TPaymentSchema.pre('aggregate', function (next) {
+//   this.pipeline().unshift({ $match: { isDelete: { $ne: true } } });
+//   next();
+// });
+// TPaymentSchema.pre('findOne', function (next) {
+//   this.find({ isDelete: { $ne: true } });
 
-  next();
-});
+//   next();
+// });
+
+// midlewere 
+
+TPaymentSchema.pre<Query<any, any>>("find", function (next) {
+    const options = this.getOptions(); // Get custom options
+    if (!options?.includeDeleted) {
+      this.find({ isDeleted: { $ne: true } });
+    }
+    next();
+  });
+  
+  
+  
+  TPaymentSchema.pre("aggregate", function (next) {
+    const pipelineOptions = this.pipeline();
+    if (
+      !pipelineOptions.find(
+        (stage): stage is PipelineStage.Match => "$match" in stage && stage.$match?.isDeleted !== undefined
+      )
+    ) {
+      this.pipeline().unshift({ $match: { isDeleted: { $ne: true } } });
+    }
+  
+    next();
+  });
+  
+  TPaymentSchema.pre<Query<any, any>>("findOne", function (next) {
+    const options = this.getOptions();
+    if (!options?.includeDeleted) {
+      this.find({ isDeleted: { $ne: true } });
+    }
+    next();
+  });
 
 TPaymentSchema.statics.isCompanyApplyExist = async function (id: string) {
   return await payments.findById(id);

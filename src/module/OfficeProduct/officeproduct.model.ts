@@ -1,4 +1,4 @@
-import { model, Schema } from "mongoose";
+import { model, Query, Schema,PipelineStage } from "mongoose";
 import {
   OfficeProductModal,
   TOfficeInfrastructure,
@@ -110,22 +110,38 @@ const OfficeInfrastructureSchema = new Schema<TOfficeInfrastructure, OfficeProdu
   { timestamps: true }
 );
 
-// Middleware
-OfficeInfrastructureSchema.pre("find", function (next) {
-  this.where({ isDeleted: { $ne: true } });
-  next();
-});
 
-OfficeInfrastructureSchema.pre("aggregate", function (next) {
-  this.pipeline().unshift({ $match: { isDeleted: { $ne: true } } });
-  next();
-});
-OfficeInfrastructureSchema.pre('findOne',function(next){
+
+// midlewere 
+
+OfficeInfrastructureSchema.pre<Query<any, any>>("find", function (next) {
+    const options = this.getOptions(); // Get custom options
+    if (!options?.includeDeleted) {
+      this.find({ isDeleteted: { $ne: true } });
+    }
+    next();
+  });
   
-  this.find({ isDeleted:{$ne:true}})
-
-  next();
-});
+  OfficeInfrastructureSchema.pre("aggregate", function (next) {
+    const pipelineOptions = this.pipeline();
+    if (
+      !pipelineOptions.find(
+        (stage): stage is PipelineStage.Match => "$match" in stage && stage.$match?.isDeleteted !== undefined
+      )
+    ) {
+      this.pipeline().unshift({ $match: { isDeleteted: { $ne: true } } });
+    }
+  
+    next();
+  });
+  
+  OfficeInfrastructureSchema.pre<Query<any, any>>("findOne", function (next) {
+    const options = this.getOptions();
+    if (!options?.includeDeleted) {
+      this.find({ isDeleteted: { $ne: true } });
+    }
+    next();
+  });
 
 OfficeInfrastructureSchema.statics.isOfficeProductExist = async function (id: string) {
   return this.findById(id);

@@ -128,7 +128,7 @@ const validitePayment = async (payload: any) => {
 const FindAllPaymentListFromDb = async (query: Record<string, unknown>) => {
   try {
     const officeQuery = new QueryBuilder(
-      payments.find({payment:true}).populate('userId').populate('categorieId'),
+      payments.find({ payment: true }).populate('userId'),
       query,
     )
       .search(excludeField)
@@ -149,17 +149,14 @@ const FindAllPaymentListFromDb = async (query: Record<string, unknown>) => {
   }
 };
 
-
 const FindAllPaymentListAdminFromDb = async (
   query: Record<string, unknown>,
 ) => {
   try {
     const officeQuery = new QueryBuilder(
       payments
-        .find({payment:true})
-        .populate('userId')
-        .populate('categorieId')
-        .populate('productdetailsId'),
+        .find({ payment: true }, null, { includeDeleted: true })
+        .populate('userId'),
       query,
     )
       .search(excludeField)
@@ -232,7 +229,10 @@ const UpdatePaymentStatusFromDb = async (transactionId: string) => {
       success: true,
 
       data: {
-        message:(updatedPayment && updatedCategorie && updatedProduct)?'Successfully Recorded':''
+        message:
+          updatedPayment && updatedCategorie && updatedProduct
+            ? 'Successfully Recorded'
+            : '',
       },
     };
   } catch (error) {
@@ -251,7 +251,6 @@ const UpdatePaymentStatusFromDb = async (transactionId: string) => {
 };
 
 const FailedPaymentStatusDeleteFromDb = async (transactionId: string) => {
-
   const session = await mongoose.startSession();
   session.startTransaction();
 
@@ -260,7 +259,7 @@ const FailedPaymentStatusDeleteFromDb = async (transactionId: string) => {
       .findOne(
         { transactionId },
         {
-          _id: 1
+          _id: 1,
         },
       )
       .session(session);
@@ -299,11 +298,134 @@ const FailedPaymentStatusDeleteFromDb = async (transactionId: string) => {
   }
 };
 
+const Find_My_Payment_Payment_Laser_FromDb = async (userId: string) => {
+  try {
+    const result = await payments.find({ userId, payment: true }, null, {
+      includeDeleted: true,
+    });
+    return result;
+  } catch (error) {
+    throw new AppError(
+      httpStatus.BAD_GATEWAY,
+      'my payment laser fetching error',
+      '',
+    );
+  }
+};
+
+const UserDashboardFormDb = async (userId: string) => {
+  try {
+    const paymentLaserInfo = await payments.find(
+      { userId, payment: true },
+      {
+        categorieId: 1,
+        price: 1,
+        email: 1,
+        ipaddress: 1,
+        transactionId: 1,
+      },
+      {
+        includeDeleted: true,
+      }
+    );
+
+    const officeCategories = await Promise.all(
+      paymentLaserInfo.map(async (payment) => {
+        try {
+          if (!payment?.categorieId) {
+            throw new AppError( httpStatus.NOT_FOUND,`Missing categorieId for payment: ${payment._id}`,'');
+          }
+          const categoryDetails = await officecategories
+            .findById(payment.categorieId, null, { includeDeleted: true })
+            .select({
+              amount: 1,
+              currency: 1,
+              squareFootage: 1,
+              office_categorie: 1,
+            });
+
+          if (!categoryDetails) {
+             throw new AppError(httpStatus.NOT_FOUND,`No category found for ID: ${payment.categorieId}`,'');
+          }
+
+          return categoryDetails;
+        } catch (error) {
+          throw new AppError(httpStatus.NOT_FOUND,`Error fetching category for ID ${payment?.categorieId}:`,'');
+          
+        }
+      })
+    );
+    return {
+      officeCategories,
+      paymentLaserInfo,
+    };
+  } catch (error) {
+    throw new AppError(httpStatus.NOT_FOUND,`Unable to retrieve dashboard data. Please try again later.`,'');
+  }
+};
+
+const AdminDashboardFormDb=async() =>{
+
+  try {
+    const paymentLaserInfo = await payments.find(
+      {  payment: true },
+      {
+        categorieId: 1,
+        price: 1,
+        email: 1,
+        ipaddress: 1,
+        transactionId: 1,
+      },
+      {
+        includeDeleted: true,
+      }
+    );
+
+    const officeCategories = await Promise.all(
+      paymentLaserInfo.map(async (payment) => {
+        try {
+          if (!payment?.categorieId) {
+            throw new AppError( httpStatus.NOT_FOUND,`Missing categorieId for payment: ${payment._id}`,'');
+          }
+          const categoryDetails = await officecategories
+            .findById(payment.categorieId, null, { includeDeleted: true })
+            .select({
+              amount: 1,
+              currency: 1,
+              squareFootage: 1,
+              office_categorie: 1,
+            });
+
+          if (!categoryDetails) {
+             throw new AppError(httpStatus.NOT_FOUND,`No category found for ID: ${payment.categorieId}`,'');
+          }
+
+          return categoryDetails;
+        } catch (error) {
+          throw new AppError(httpStatus.NOT_FOUND,`Error fetching category for ID ${payment?.categorieId}:`,'');
+          
+        }
+      })
+    );
+    return {
+      officeCategories,
+      paymentLaserInfo,
+    };
+  } catch (error) {
+    throw new AppError(httpStatus.NOT_FOUND,`Unable to retrieve dashboard data. Please try again later.`,'');
+  }
+}
+
+
+
 export const PaymentServices = {
   PaymentGetWayFromDb,
   validitePayment,
   FindAllPaymentListFromDb,
   FindAllPaymentListAdminFromDb,
   UpdatePaymentStatusFromDb,
-  FailedPaymentStatusDeleteFromDb
+  FailedPaymentStatusDeleteFromDb,
+  Find_My_Payment_Payment_Laser_FromDb,
+  UserDashboardFormDb,
+  AdminDashboardFormDb
 };

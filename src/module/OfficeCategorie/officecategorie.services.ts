@@ -12,7 +12,7 @@ const CreateNewOfficeCategorieIntoDb = async (payload: TOfficeCategorie) => {
   return result;
 };
 const GetAllOfficeCategorieFromDb = async (query: Record<string, unknown>) => {
-  const officeQuery = new QueryBuilder(officecategories.find(), query)
+  const officeQuery = new QueryBuilder(officecategories.find({}), query)
     .search(excludeField)
     .filter()
     .sort()
@@ -21,17 +21,64 @@ const GetAllOfficeCategorieFromDb = async (query: Record<string, unknown>) => {
 
   const result = await officeQuery.modelQuery;
   const meta = await officeQuery.countTotal();
-
+  result?.filter((item)=>item?.isDelete!==true)
   return {
     meta,
     result,
   };
 };
 
+const GetAllSelleingOfficeCategorieFromDb=async(query: Record<string, unknown>)=>{
+
+  const officeQuery = new QueryBuilder(
+    officecategories.find({ isDelete: true }, null, { includeDeleted: true }),
+    query
+  )
+    .search(excludeField)
+    .filter()
+    .sort()
+    .paginate()
+    .fields();
+
+  const result = await officeQuery.modelQuery;
+  const meta = await officeQuery.countTotal();
+  
+
+  return {
+    meta,
+    result,
+  };
+
+ 
+}
+
 const GetSpecificOfficesCategorieFromDb = async (id: string) => {
   const result = await officecategories.isOfficeCategorieExist(id);
   return result;
 };
+
+const GetSpecificSellingOfficeCategorieFromDb = async (id: string) => {
+  try {
+    const result = await officecategories.findById(
+      id,
+      null, 
+      { includeDeleted: true }
+    );
+
+    if (!result) {
+      throw new AppError(httpStatus.NOT_FOUND, 'Office category not found','');
+    }
+
+    return result;
+  } catch (error) {
+    throw new AppError(
+      httpStatus.INTERNAL_SERVER_ERROR,
+      'Error fetching specific office category',
+      ''
+    );
+  }
+};
+
 
 const UpdateOfficeCategorieFromDb = async (
   id: string,
@@ -54,6 +101,8 @@ const UpdateOfficeCategorieFromDb = async (
 };
 
 // delete
+
+
 
 const DeleteOfficeCategorieFromDb = async (id: string) => {
   const session = await mongoose.startSession();
@@ -99,5 +148,7 @@ export const OfficeCategorieServices = {
   GetAllOfficeCategorieFromDb,
   GetSpecificOfficesCategorieFromDb,
   UpdateOfficeCategorieFromDb,
-  DeleteOfficeCategorieFromDb
+  DeleteOfficeCategorieFromDb,
+  GetAllSelleingOfficeCategorieFromDb,
+  GetSpecificSellingOfficeCategorieFromDb
 };
