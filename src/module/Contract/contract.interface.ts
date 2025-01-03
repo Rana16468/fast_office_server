@@ -9,6 +9,8 @@ export type TContract={
     phoneNumber:string;
     address:string;
     photo:string;
+    subject:string;
+    message:string;
     isDelete:boolean;
     isfavorite:Boolean;
     ContractId:Types.ObjectId;

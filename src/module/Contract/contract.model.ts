@@ -19,10 +19,23 @@ const TContractSchema = new Schema({
         type: String,
         required: [true,'address is Required']
     },
+    
     photo: {
         type: String,
         required: [true,'profile picture is required']
     },
+    subject:{
+        type:String,
+        required: [true,'subject is required']
+
+    },
+    message:{
+        type:String,
+        required: [true,'message is required']
+    },
+
+    
+
     isfavorite:{
         type: Boolean,
         required: true,

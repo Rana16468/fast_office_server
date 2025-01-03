@@ -1,12 +1,15 @@
 import { z } from 'zod';
 
 const ContractValidationSchema=z.object({
+    
     body:z.object({
         name: z.string({required_error:"Name is Required"}).min(1, 'name is Required'),
         email: z.string({required_error:"Email is Optional"}).email().optional(),
         phoneNumber: z.string({required_error:"phone Number is Required"}).min(1, 'phone Number is Required'),
         address: z.string({required_error:"Address is Required"}).min(1, 'address is Required'),
         photo: z.string({required_error:"profile picture is required"}).min(1, 'profile picture is required'),
+        subject:z.string({required_error:"subject is required"}).min(1, 'Subject  is required'),
+        message:z.string({required_error:"message is required"}).min(1, 'message  is required'),
         isfavorite:z.boolean().default(false),
         isDelete: z.boolean().default(false),
     })
