@@ -47,11 +47,11 @@ const findAllUsers:RequestHandler=catchAsync(async(req,res)=>{
 
 
 
-
 export const AuthController={
     createValidationToken,
     updateMyProfile,
     chnageUserRoleStatus,
     specificUserRoll,
-    findAllUsers
+    findAllUsers,
+   
 }

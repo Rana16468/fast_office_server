@@ -92,10 +92,14 @@ const findAllUsersFromDb = async (query: Record<string, unknown>) => {
   };
 };
 
+
+
+
 export const AuthService = {
   createValidationTokenIntoDb,
   updateMyProfileFromDb,
   chnageUserRoleStatusFromDb,
   specificUserRollIntoDb,
-  findAllUsersFromDb 
+  findAllUsersFromDb ,
+ 
 };

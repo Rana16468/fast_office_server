@@ -7,6 +7,7 @@ import { USER_ROLE } from '../User/user.constant';
 
 const router= express.Router();
 
+
 router.post('/', auth(USER_ROLE.USER,USER_ROLE.ADMIN,USER_ROLE.EMPLOYEE),validationRequest(ContractValidation.ContractValidationSchema),ContractController.createContract);
 router.get("/",auth(USER_ROLE.ADMIN,USER_ROLE.EMPLOYEE),ContractController.AllContract);
 router.get('/:id',auth(USER_ROLE.ADMIN,USER_ROLE.EMPLOYEE),ContractController.SpecificContractId);
