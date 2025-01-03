@@ -72,9 +72,21 @@ const findSpecificRoomFromDb = async (id: string) => {
   }
 };
 
+const  deleteSpecificRoomFromDb=async(id:string)=>{
+  try{
+    const result=await rooms.findByIdAndDelete(id);
+    return result;
+
+  }
+  catch(error){
+    throw new AppError(httpStatus.NOT_FOUND, 'room  fatching error', '');
+  }
+}
+
 export const RoomServices = {
   create_room_IntoDb,
   findAllRoomFromDb,
   findSpecificRoomFromDb,
+  deleteSpecificRoomFromDb
   
 };

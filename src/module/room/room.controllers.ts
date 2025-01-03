@@ -23,6 +23,14 @@ const create_room:RequestHandler=catchAsync(async(req,res)=>{
 
  });
 
+ const deleteSpecificRoom:RequestHandler=catchAsync(async(req,res)=>{
+
+    const result=await RoomServices.deleteSpecificRoomFromDb(req.params.id);
+    sendRespone(res,{success:true,statusCode:httpStatus.OK,message:"Successfully  Delete Room",data:result});
+
+
+ })
+
  
 
 
@@ -30,5 +38,6 @@ export const RoomController={
     create_room,
     findAllRoom,
     findSpecificRoom,
+    deleteSpecificRoom
     
 }
