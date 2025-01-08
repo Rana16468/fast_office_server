@@ -6,6 +6,8 @@ import { TOfficeCategorie } from './officecategorie.interfaces';
 import { officecategories } from './officecategorie.modal';
 import { officeproducts } from '../OfficeProduct/officeproduct.model';
 import mongoose from 'mongoose';
+import { GoogleGenerativeAI }  from "@google/generative-ai";
+import config from '../../app/config';
 
 const CreateNewOfficeCategorieIntoDb = async (payload: TOfficeCategorie) => {
   const result = await officecategories.create(payload);
@@ -140,6 +142,43 @@ const DeleteOfficeCategorieFromDb = async (id: string) => {
 };
 
 
+const AiBaseCostBenefitAnalysisFromDb = async (payload: { prompt: string }) => {
+  const googleAI = new GoogleGenerativeAI(config.gemini_api_key as string);
+  
+  try {
+    const geminiConfig:{
+      temperature:number,
+      topP:number,
+      topK:number,
+      maxOutputTokens:number
+    } = {
+      temperature: 0.9,
+      topP: 1,
+      topK: 1,
+      maxOutputTokens: 4096,
+    };
+    const geminiModel = await googleAI.getGenerativeModel({
+      model: "gemini-pro",
+      ...geminiConfig
+      
+    });
+     const result=await geminiModel.generateContent(payload?.prompt);
+     const response=result?.response.text().replace(/\n/g, " ").replace(/\*/g, "");
+     return response;
+
+  } catch (error) {
+    throw new AppError(
+      httpStatus.INTERNAL_SERVER_ERROR,
+      "Failed to generate AI analysis",
+       ''
+    );
+  }
+};
+
+
+
+
+
 
 // Enhanced error handling and validation
 
@@ -150,5 +189,6 @@ export const OfficeCategorieServices = {
   UpdateOfficeCategorieFromDb,
   DeleteOfficeCategorieFromDb,
   GetAllSelleingOfficeCategorieFromDb,
-  GetSpecificSellingOfficeCategorieFromDb
+  GetSpecificSellingOfficeCategorieFromDb,
+  AiBaseCostBenefitAnalysisFromDb
 };

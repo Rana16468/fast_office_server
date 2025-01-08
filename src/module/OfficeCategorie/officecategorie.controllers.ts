@@ -48,7 +48,16 @@ const  UpdateOfficeCategorie:RequestHandler=catchAsync(async(req,res)=>{
 const  DeleteOfficeCategorie:RequestHandler=catchAsync(async(req,res)=>{
     const result=await OfficeCategorieServices.DeleteOfficeCategorieFromDb(req.params.id);
     sendRespone(res,{success:true,statusCode:httpStatus.OK,message:"Successfully Delete Categorie",data:result});
-})
+});
+
+
+const AiBaseCostBenefitAnalysis:RequestHandler=catchAsync(async(req,res)=>{
+
+    const result=await OfficeCategorieServices.AiBaseCostBenefitAnalysisFromDb(req.body);
+    sendRespone(res,{success:true,statusCode:httpStatus.OK,message:"Analysis Successfull",data:result});
+
+
+});
 
 export const OfficeCategorieController={
     CreateNewOfficeCategorie,
@@ -57,5 +66,6 @@ export const OfficeCategorieController={
     UpdateOfficeCategorie,
     DeleteOfficeCategorie,
     GetAllSelleingOfficeCategorie,
-    GetSpecificSellingOfficeCategorie
+    GetSpecificSellingOfficeCategorie,
+    AiBaseCostBenefitAnalysis
 }

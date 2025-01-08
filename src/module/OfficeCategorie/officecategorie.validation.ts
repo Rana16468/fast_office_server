@@ -69,10 +69,17 @@ const TUpdateOfficeCategorieSchema = z.object({
         isDelete: z.boolean().default(false).optional(),
       })
       .optional(),
-  })
+  });
+
+  const AiAnalysisSchema=z.object({
+      body:z.object({
+        prompt:z.string({required_error:"promt is required"})
+      })
+  });
   
 
 export const OfficeValidationSchema = {
   TOfficeCategorieSchema,
-  TUpdateOfficeCategorieSchema
+  TUpdateOfficeCategorieSchema,
+  AiAnalysisSchema
 };

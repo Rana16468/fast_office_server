@@ -17,5 +17,6 @@ export default {
     success_url:process.env.SUCCESS_URL,
     fail_url:process.env.FAIL_URL,
     cancel_url:process.env.CANCEL_URL
-  }
+  },
+  gemini_api_key:process.env.GEMINI_API_KEY
 };
