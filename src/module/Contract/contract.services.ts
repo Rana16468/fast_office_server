@@ -82,17 +82,18 @@ const UpdateContractFromDb = async (
   return result;
 };
 const DeleteContractFromDb = async (id: string) => {
-  const isExistUser = await Contract.findById(id);
-  if (!isExistUser) {
-    throw new AppError(
-      httpStatus.NOT_FOUND,
-      'User Not Exist in the System',
-      '',
-    );
-  }
   try {
-    const result = await Contract.deleteOne({ _id: id });
-    return result;
+    const result = await Contract.findByIdAndDelete(id);
+    if (!result) {
+      throw new AppError(
+        httpStatus.NOT_FOUND,
+        'Contract Information Not Founded',
+        '',
+      );
+    }
+    return {
+      message: result ? 'Successfully Delete Contact Information' : '',
+    };
   } catch (error) {
     throw new AppError(httpStatus.NOT_FOUND, 'User Not Exist in System', '');
   }

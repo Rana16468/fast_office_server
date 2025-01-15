@@ -64,6 +64,14 @@ const  Find_Specific_Office_Gallery:RequestHandler=catchAsync(async(req,res)=>{
 });
 
 
+const DeleteOfficeProduct:RequestHandler=catchAsync(async(req,res)=>{
+
+    const result=await OfficeProductServices.DeleteOfficeProductFromDb(req.params.officeproductId);
+    sendRespone(res,{success:true,statusCode:httpStatus.OK,message:"Successfully Delete Office Product",data:result});
+
+});
+
+
 
 export const OfficeProductController={
     CreateOfficeProduct,
@@ -74,6 +82,7 @@ export const OfficeProductController={
     Delete_Office_Infastructure,
     Office_Categorie_Infastructure,
     Find_Specific_Office_Gallery,
-    Find_Specific_Selling_Office_Infastructure
+    Find_Specific_Selling_Office_Infastructure,
+    DeleteOfficeProduct
     
 }

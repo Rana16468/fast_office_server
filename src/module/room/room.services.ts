@@ -75,7 +75,12 @@ const findSpecificRoomFromDb = async (id: string) => {
 const  deleteSpecificRoomFromDb=async(id:string)=>{
   try{
     const result=await rooms.findByIdAndDelete(id);
-    return result;
+     if(!result){
+      throw new AppError(httpStatus.NOT_FOUND, 'delete specific confarance room issues', '');
+     }
+     return {
+      message:result?"Successfully Delete Confatrance Room":""
+     }
 
   }
   catch(error){
