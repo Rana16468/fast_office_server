@@ -59,6 +59,8 @@ const AiBaseCostBenefitAnalysis:RequestHandler=catchAsync(async(req,res)=>{
 
 });
 
+
+
 export const OfficeCategorieController={
     CreateNewOfficeCategorie,
     GetAllShoesOfficeCategorie,
@@ -68,4 +70,5 @@ export const OfficeCategorieController={
     GetAllSelleingOfficeCategorie,
     GetSpecificSellingOfficeCategorie,
     AiBaseCostBenefitAnalysis
+  
 }
