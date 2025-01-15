@@ -288,6 +288,35 @@ const Find_Specific_Office_Gallery_FromDb=async(officeproductId:string)=>{
   }
 }
 
+const DeleteOfficeProductFromDb=async(officeproductId:string)=>{
+  try{
+
+    const deleteOfficeProduct=await officeproducts.findByIdAndDelete(officeproductId);
+    if(!deleteOfficeProduct){
+      throw new AppError(httpStatus.NOT_FOUND, 'Failed Office Product', '');
+    }
+
+    return {
+        message:deleteOfficeProduct?"Successfully Delete Office Product":""
+    }
+
+  }
+  catch(error){
+    throw new AppError(
+      httpStatus.SERVICE_UNAVAILABLE,
+      'Error fetching Office Product',
+      '' // Include the error message for debugging
+  );
+  }
+
+
+
+
+
+  
+
+}
+
 
 
 
@@ -300,5 +329,6 @@ export const OfficeProductServices = {
   UpdateOffice_Infastructure_FormDb,
   Delete_Office_Infastructure_FromDb,
   Office_Categorie_Infastructure_FromDb,
-  Find_Specific_Office_Gallery_FromDb
+  Find_Specific_Office_Gallery_FromDb,
+  DeleteOfficeProductFromDb
 };

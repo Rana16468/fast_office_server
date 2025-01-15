@@ -18,4 +18,5 @@ router.delete("/delete_office_categorie/:id",auth(USER_ROLE.ADMIN),OfficeCategor
 router.get("/get_all_selling_office_categorie",auth(USER_ROLE.ADMIN,USER_ROLE.EMPLOYEE,USER_ROLE.USER), OfficeCategorieController.GetAllSelleingOfficeCategorie);
 router.get("/get_specific_office_selling_categorie/:id",auth(USER_ROLE.ADMIN,USER_ROLE.EMPLOYEE,USER_ROLE.USER),OfficeCategorieController.GetSpecificSellingOfficeCategorie);
 router.post("/ai_base_costbenefit_analysis",validationRequest(OfficeValidationSchema.AiAnalysisSchema),OfficeCategorieController.AiBaseCostBenefitAnalysis);
+
 export const OfficeCategorieRouter=router;

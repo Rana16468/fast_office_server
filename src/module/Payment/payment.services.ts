@@ -10,6 +10,7 @@ import { excludeField } from './payment.constant';
 import { users } from '../User/user.model';
 import { officecategories } from '../OfficeCategorie/officecategorie.modal';
 import { officeproducts } from '../OfficeProduct/officeproduct.model';
+import { rooms } from '../room/room.modal';
 
 const PaymentGetWayFromDb = async (payload: TPayment, userId: string) => {
   const isExistOfficeCategorie = await officecategories.findById(
@@ -57,7 +58,7 @@ const PaymentGetWayFromDb = async (payload: TPayment, userId: string) => {
       success_url: config.ssl_commerce.success_url,
       fail_url: config.ssl_commerce.fail_url,
       cancel_url: config.ssl_commerce.cancel_url,
-      ipn_url: 'http://localhost:3051/ipn',
+      ipn_url: 'https://fast-office-server.vercel.app/ipn',
       shipping_method: 'N/A',
       product_name: 'Appointment',
       product_category: 'Electronic',
@@ -161,7 +162,7 @@ const FindAllPaymentListAdminFromDb = async (
     )
       .search(excludeField)
       .filter()
-      .sort()
+      .sort() 
       .paginate()
       .fields();
 
@@ -197,7 +198,7 @@ const UpdatePaymentStatusFromDb = async (transactionId: string) => {
       );
     }
 
-    const [updatedCategorie, updatedProduct, updatedPayment] =
+    const [updatedCategorie, updatedProduct, updatedPayment,deleteConference] =
       await Promise.all([
         officecategories.findByIdAndUpdate(
           existingPayment.categorieId,
@@ -214,9 +215,11 @@ const UpdatePaymentStatusFromDb = async (transactionId: string) => {
           { payment: true },
           { new: true, runValidators: true, session },
         ),
+        rooms.deleteMany({_id:existingPayment.categorieId},{session})
+
       ]);
 
-    if (!updatedCategorie || !updatedProduct || !updatedPayment) {
+    if (!updatedCategorie || !updatedProduct || !updatedPayment || !deleteConference) {
       throw new AppError(
         httpStatus.INTERNAL_SERVER_ERROR,
         'Failed to update all required documents',
@@ -230,7 +233,7 @@ const UpdatePaymentStatusFromDb = async (transactionId: string) => {
 
       data: {
         message:
-          updatedPayment && updatedCategorie && updatedProduct
+          updatedPayment && updatedCategorie && updatedProduct && deleteConference
             ? 'Successfully Recorded'
             : '',
       },
